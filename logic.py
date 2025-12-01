@@ -3,11 +3,16 @@ from bankdetailsgui import *
 from launchscreengui import *
 from accountcreationgui import *
 
-
 import csv
 
-class Account:
 
+class Launch(QMainWindow, Ui_LaunchWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
+class Account:
     def __init__(self, name, balance=0):
         self.__name = name
         self.set_balance(balance)
