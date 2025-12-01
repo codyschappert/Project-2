@@ -128,7 +128,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="signin_label">
+   <widget class="QPushButton" name="signin_button">
     <property name="geometry">
      <rect>
       <x>200</x>

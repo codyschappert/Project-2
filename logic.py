@@ -1,3 +1,5 @@
+from tkinter import BooleanVar
+
 from PyQt6.QtWidgets import *
 from bankdetailsgui import *
 from launchscreengui import *
@@ -5,11 +7,47 @@ from accountcreationgui import *
 
 import csv
 
+first_names = ['Cody', 'Jacob', 'Bob']
+last_names = ['Schappert', 'Clasemann', 'Wilson']
+passwords = ['0', '1', '2']
 
 class Launch(QMainWindow, Ui_LaunchWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        self.signin_button.clicked.connect(lambda: self.signin())
+
+    def signin(self) -> None:
+        first_name = self.fname_input.text()
+        last_name = self.lname_input.text()
+        password = self.password_input.text()
+
+        for i in len(first_names):
+            if first_names[i] == first_name:
+               if last_names[i] == last_name:
+                   if passwords[i] == password:
+                       sign_in = True
+                       print('True')
+                   else:
+                       sign_in = False
+                       print('False')
+
+
+
+
+class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
+
+
+
+
+
+
 
 
 class Account:
