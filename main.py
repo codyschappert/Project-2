@@ -1,4 +1,4 @@
-from logic_p2 import *
+import logic
 
 def main():
     application = QApplication([])

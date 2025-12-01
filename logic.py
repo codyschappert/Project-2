@@ -1,5 +1,9 @@
 from PyQt6.QtWidgets import *
-from gui_p2 import *
+from bankdetailsgui import *
+from launchscreengui import *
+from accountcreationgui import *
+
+
 import csv
 
 class Account:
