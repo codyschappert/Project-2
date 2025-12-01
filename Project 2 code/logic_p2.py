@@ -1,3 +1,7 @@
+from PyQt6.QtWidgets import *
+from gui_p2 import *
+import csv
+
 class Account:
 
     def __init__(self, name, balance=0):

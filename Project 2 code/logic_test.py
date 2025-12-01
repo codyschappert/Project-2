@@ -1,4 +1,4 @@
-from accounts import *
+from logic_p2 import *
 
 
 def main():
