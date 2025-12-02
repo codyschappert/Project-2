@@ -63,6 +63,9 @@ class Ui_AccountCreationWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setTabOrder(self.username_input, self.password_input)
+        MainWindow.setTabOrder(self.password_input, self.password_confirm_input)
+        MainWindow.setTabOrder(self.password_confirm_input, self.create_account_button)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

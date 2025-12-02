@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69b9c6f4-9c36-42f8-a055-d68335a5d55a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Project-2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project-2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account_creation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/account_creation.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/accountcreationgui.py" beforeDir="false" afterPath="$PROJECT_DIR$/accountcreationgui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/launch_screen.ui" beforeDir="false" afterPath="$PROJECT_DIR$/launch_screen.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/launchscreengui.py" beforeDir="false" afterPath="$PROJECT_DIR$/launchscreengui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bank_details.ui" beforeDir="false" afterPath="$PROJECT_DIR$/bank_details.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankdetailsgui.py" beforeDir="false" afterPath="$PROJECT_DIR$/bankdetailsgui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

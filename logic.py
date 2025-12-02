@@ -54,7 +54,6 @@ class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
                 raise TypeError
 
             user_info[username] = password
-            print(user_info)
             self.error_label.setText("Account created!")
 
         except TypeError:

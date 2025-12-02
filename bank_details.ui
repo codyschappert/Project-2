@@ -40,9 +40,9 @@
    <widget class="QLabel" name="welcome_label">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>0</x>
       <y>10</y>
-      <width>361</width>
+      <width>501</width>
       <height>41</height>
      </rect>
     </property>
@@ -108,7 +108,7 @@
       <rect>
        <x>10</x>
        <y>150</y>
-       <width>81</width>
+       <width>111</width>
        <height>22</height>
       </rect>
      </property>
@@ -126,9 +126,9 @@
     <widget class="QLineEdit" name="savings_amount_input">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>210</x>
        <y>150</y>
-       <width>161</width>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
@@ -136,14 +136,17 @@
     <widget class="QLabel" name="savings_amount_label">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>130</x>
        <y>150</y>
-       <width>51</width>
+       <width>71</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Amount: $</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="savings_option_confirm">
@@ -218,7 +221,7 @@
       <rect>
        <x>10</x>
        <y>150</y>
-       <width>81</width>
+       <width>111</width>
        <height>22</height>
       </rect>
      </property>
@@ -236,9 +239,9 @@
     <widget class="QLineEdit" name="checking_amount_input">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>210</x>
        <y>150</y>
-       <width>161</width>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
@@ -246,14 +249,17 @@
     <widget class="QLabel" name="checking_amount_label">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>130</x>
        <y>150</y>
-       <width>51</width>
+       <width>71</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Amount: $</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="checking_option_confirm">
@@ -273,27 +279,33 @@
    <widget class="QLabel" name="checking_error_label">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>0</x>
       <y>240</y>
-      <width>411</width>
-      <height>16</height>
+      <width>501</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Please enter an amount.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="savings_error_label">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>0</x>
       <y>460</y>
-      <width>411</width>
-      <height>16</height>
+      <width>501</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Please enter an amount.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
