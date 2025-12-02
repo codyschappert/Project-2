@@ -4,7 +4,7 @@ from launchscreengui import *
 from accountcreationgui import *
 import csv
 
-user_info = {}
+user_info = {'cschappert' : '1234'}
 
 class Launch(QMainWindow, Ui_LaunchWindow):
     def __init__(self):
@@ -72,11 +72,40 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
 
 
 
+        self.checking_option_confirm.clicked.connect(lambda: self.checking_action())
+        self.savings_option_confirm.clicked.connect(lambda: self.savings_action())
 
+    def checking_action(self):
+        self.checking_balance = float(self.checking_balance_label.text())
+        self.checking_input = float(self.checking_amount_input.text())
 
+        self.checking_option = self.checking_option_select.currentText()
 
+        if self.checking_option == 'Deposit':
+            self.checking_error_label.setText("")
+            self.checking_balance += self.checking_input
+            print(self.checking_balance)
+            self.checking_balance_label.setText(f"{self.checking_balance}")
 
+        elif self.checking_option == 'Withdraw':
+            try:
+                self.checking_balance = float(self.checking_balance_label.text())
+                self.checking_balance -= self.checking_input
 
+                if self.checking_balance < 0:
+                    raise ValueError
+                else:
+                    self.checking_balance -= self.checking_input
+                    self.checking_balance_label.setText(f"{self.checking_balance}")
+
+            except ValueError:
+                self.checking_error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
+
+    def savings_action(self):
+        self.savings_balance = float(self.savings_balance_label.text())
+        self.savings_input = float(self.savings_amount_input.text())
+
+        self.savings_option = self.savings_option_select.currentText()
 
 
 

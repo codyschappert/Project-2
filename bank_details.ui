@@ -85,12 +85,12 @@
       <string>SAVINGS ACCOUNT</string>
      </property>
     </widget>
-    <widget class="QLabel" name="savings_balance">
+    <widget class="QLabel" name="savings_moneysign">
      <property name="geometry">
       <rect>
        <x>140</x>
        <y>60</y>
-       <width>121</width>
+       <width>16</width>
        <height>61</height>
       </rect>
      </property>
@@ -100,7 +100,7 @@
       </font>
      </property>
      <property name="text">
-      <string>$0.00</string>
+      <string>$</string>
      </property>
     </widget>
     <widget class="QComboBox" name="savings_option_select">
@@ -162,6 +162,24 @@
       <string>Confirm</string>
      </property>
     </widget>
+    <widget class="QLabel" name="savings_balance_label">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>60</y>
+       <width>121</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>25</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0.00</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="checking" native="true">
     <property name="geometry">
@@ -198,12 +216,12 @@
       <string>CHECKING ACCOUNT</string>
      </property>
     </widget>
-    <widget class="QLabel" name="checking_balance">
+    <widget class="QLabel" name="checking_moneysign">
      <property name="geometry">
       <rect>
        <x>140</x>
        <y>60</y>
-       <width>121</width>
+       <width>21</width>
        <height>61</height>
       </rect>
      </property>
@@ -213,7 +231,7 @@
       </font>
      </property>
      <property name="text">
-      <string>$0.00</string>
+      <string>$</string>
      </property>
     </widget>
     <widget class="QComboBox" name="checking_option_select">
@@ -275,6 +293,24 @@
       <string>Confirm</string>
      </property>
     </widget>
+    <widget class="QLabel" name="checking_balance_label">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>60</y>
+       <width>121</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>25</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0.00</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="checking_error_label">
     <property name="geometry">
@@ -286,7 +322,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Please enter an amount.</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -302,7 +338,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Please enter an amount.</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
