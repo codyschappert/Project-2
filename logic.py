@@ -1,15 +1,12 @@
-from tkinter import BooleanVar
-
 from PyQt6.QtWidgets import *
 from bankdetailsgui import *
 from launchscreengui import *
 from accountcreationgui import *
-
 import csv
 
 first_names = ['Cody', 'Jacob', 'Bob']
-last_names = ['Schappert', 'Clasemann', 'Wilson']
-passwords = ['0', '1', '2']
+last_names = ['Schappert', 'Clasemann','Wilson']
+passwords = ['0']
 
 class Launch(QMainWindow, Ui_LaunchWindow):
     def __init__(self):
@@ -17,6 +14,7 @@ class Launch(QMainWindow, Ui_LaunchWindow):
         self.setupUi(self)
 
         self.signin_button.clicked.connect(lambda: self.signin())
+        self.createaccount_button.clicked.connect(lambda: self.create_account_window())
 
     def signin(self) -> None:
         first_name = self.fname_input.text()
@@ -33,7 +31,10 @@ class Launch(QMainWindow, Ui_LaunchWindow):
                        sign_in = False
                        print('False')
 
-
+    def create_account_window(self):
+        window1 = CreateAccount()
+        window1.show()
+        app.exec_()
 
 
 class CreateAccount(QMainWindow, Ui_AccountCreationWindow):

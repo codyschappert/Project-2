@@ -9,7 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_mainWindow(object):
+class Ui_LaunchWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(500, 500)
@@ -49,9 +49,9 @@ class Ui_mainWindow(object):
         self.signin_button = QtWidgets.QPushButton(parent=self.Welcome_2)
         self.signin_button.setGeometry(QtCore.QRect(200, 200, 101, 23))
         self.signin_button.setObjectName("signin_button")
-        self.createaccount_label = QtWidgets.QPushButton(parent=self.Welcome_2)
-        self.createaccount_label.setGeometry(QtCore.QRect(200, 230, 101, 23))
-        self.createaccount_label.setObjectName("createaccount_label")
+        self.createaccount_button = QtWidgets.QPushButton(parent=self.Welcome_2)
+        self.createaccount_button.setGeometry(QtCore.QRect(200, 230, 101, 23))
+        self.createaccount_button.setObjectName("createaccount_button")
         self.error_label = QtWidgets.QLabel(parent=self.Welcome_2)
         self.error_label.setGeometry(QtCore.QRect(170, 260, 171, 31))
         self.error_label.setObjectName("error_label")
@@ -76,7 +76,7 @@ class Ui_mainWindow(object):
         self.lname_label.setText(_translate("mainWindow", "Last Name"))
         self.password_label.setText(_translate("mainWindow", "Password"))
         self.signin_button.setText(_translate("mainWindow", "Sign in"))
-        self.createaccount_label.setText(_translate("mainWindow", "Create an account"))
+        self.createaccount_button.setText(_translate("mainWindow", "Create an account"))
         self.error_label.setText(_translate("mainWindow", "Please log in or create an account."))
 
 
