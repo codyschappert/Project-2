@@ -4,43 +4,74 @@ from launchscreengui import *
 from accountcreationgui import *
 import csv
 
-first_names = ['Cody', 'Jacob', 'Bob']
-last_names = ['Schappert', 'Clasemann','Wilson']
-passwords = ['0']
+user_info = {}
 
 class Launch(QMainWindow, Ui_LaunchWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-
+        self.create_account = CreateAccount()
+        self.details = Details()
         self.signin_button.clicked.connect(lambda: self.signin())
         self.createaccount_button.clicked.connect(lambda: self.create_account_window())
 
     def signin(self) -> None:
-        first_name = self.fname_input.text()
-        last_name = self.lname_input.text()
+        username = self.username_input.text()
         password = self.password_input.text()
 
-        for i in len(first_names):
-            if first_names[i] == first_name:
-               if last_names[i] == last_name:
-                   if passwords[i] == password:
-                       sign_in = True
-                       print('True')
-                   else:
-                       sign_in = False
-                       print('False')
+        try:
+            if user_info[username] == password:
+                self.error_label.setText("You are logged in!")
+                self.details.show()
+            elif user_info[username] != password:
+                raise ValueError
+
+        except KeyError:
+            self.error_label.setText("No such user!")
+
+        except ValueError:
+            self.error_label.setText("Incorrect Password!")
 
     def create_account_window(self):
-        window1 = CreateAccount()
-        window1.show()
-        app.exec_()
+        self.create_account.show()
 
 
 class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+
+        self.create_account_button.clicked.connect(lambda: self.create_account())
+
+    def create_account(self):
+
+        username = self.username_input.text()
+        password = self.password_input.text()
+        password_confirm = self.password_confirm_input.text()
+
+        try:
+            if password != password_confirm:
+                raise TypeError
+
+            user_info[username] = password
+            print(user_info)
+            self.error_label.setText("Account created!")
+
+        except TypeError:
+            self.password_input.clear()
+            self.password_confirm_input.clear()
+            self.error_label.setText("Passwords do not match!")
+
+        except ValueError:
+            pass
+
+class Details(QMainWindow, Ui_BankDetailsWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
+
 
 
 
