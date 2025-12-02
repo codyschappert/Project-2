@@ -69,9 +69,6 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         super().__init__()
         self.setupUi(self)
 
-
-
-
         self.checking_option_confirm.clicked.connect(lambda: self.checking_action())
         self.savings_option_confirm.clicked.connect(lambda: self.savings_action())
 
@@ -84,19 +81,17 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         if self.checking_option == 'Deposit':
             self.checking_error_label.setText("")
             self.checking_balance += self.checking_input
-            print(self.checking_balance)
-            self.checking_balance_label.setText(f"{self.checking_balance}")
+            self.checking_balance_label.setText(self.checking_balance)
 
         elif self.checking_option == 'Withdraw':
             try:
-                self.checking_balance = float(self.checking_balance_label.text())
+                self.checking_balance = self.checking_balance_label.text()
                 self.checking_balance -= self.checking_input
 
                 if self.checking_balance < 0:
                     raise ValueError
                 else:
-                    self.checking_balance -= self.checking_input
-                    self.checking_balance_label.setText(f"{self.checking_balance}")
+                    self.checking_balance_label.setText(f"{self.checking_balance:.2f}")
 
             except ValueError:
                 self.checking_error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
