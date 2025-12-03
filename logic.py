@@ -4,14 +4,15 @@ from launchscreengui import *
 from accountcreationgui import *
 import csv
 
-user_info = {'cschappert' : '1234'}
+user_info = {}
 
 class Launch(QMainWindow, Ui_LaunchWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
         self.create_account = CreateAccount()
         self.details = Details()
+
         self.signin_button.clicked.connect(lambda: self.signin())
         self.createaccount_button.clicked.connect(lambda: self.create_account_window())
 
@@ -20,9 +21,12 @@ class Launch(QMainWindow, Ui_LaunchWindow):
         password = self.password_input.text()
 
         try:
-            if user_info[username] == password:
+            if user_info[username]['password'] == password:
+                print('success')
                 self.error_label.setText("You are logged in!")
+                self.details.set_user(username) # Communicates to details window which user is logged in
                 self.details.show()
+
             elif user_info[username] != password:
                 raise ValueError
 
@@ -32,12 +36,12 @@ class Launch(QMainWindow, Ui_LaunchWindow):
         except ValueError:
             self.error_label.setText("Incorrect Password!")
 
-    def create_account_window(self):
+    def create_account_window(self) -> None:
         self.create_account.show()
 
 
 class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
 
@@ -53,64 +57,86 @@ class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
             if password != password_confirm:
                 raise TypeError
 
-            user_info[username] = password
-            self.error_label.setText("Account created!")
+            user_info[username] = { # Sets user account details properly
+                'password': password,
+                'checking': Account('Checking', 0),
+                'savings': Account('Savings', 0)
+            }
 
+            self.error_label.setText("Account created!")
+            print(user_info)
         except TypeError:
             self.password_input.clear()
             self.password_confirm_input.clear()
             self.error_label.setText("Passwords do not match!")
 
-        except ValueError:
-            pass
 
 class Details(QMainWindow, Ui_BankDetailsWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
 
-        self.checking_option_confirm.clicked.connect(lambda: self.checking_action())
-        self.savings_option_confirm.clicked.connect(lambda: self.savings_action())
+        self.user = None  # stores username
+        self.accounts = None  # stores account data in user's dict
 
-    def checking_action(self):
-        self.checking_balance = float(self.checking_balance_label.text())
-        self.checking_input = float(self.checking_amount_input.text())
+        self.checking_option_confirm.clicked.connect(lambda: self.confirm('checking'))
+        self.savings_option_confirm.clicked.connect(lambda: self.confirm('savings'))
 
-        self.checking_option = self.checking_option_select.currentText()
+    def set_user(self, username):
+        """Load's correct details for the logged in user"""
+        self.user = username
+        self.accounts = user_info[username['checking'], username['savings']]
+        print(self.accounts)
+        self.checking_balance_label.setText(f"{self.accounts['checking']:.2f}") # Sets checking balance on log in
+        self.savings_balance_label.setText(f"{self.accounts['savings']:.2f}") # Sets savings balance on login
 
-        if self.checking_option == 'Deposit':
-            self.checking_error_label.setText("")
-            self.checking_balance += self.checking_input
-            self.checking_balance_label.setText(self.checking_balance)
+    def confirm(self, account_type):
+        """Deposits/Withdraws to/from account_type"""
+        account = self.accounts[account_type] # initializes the object (account) from the dict info
 
-        elif self.checking_option == 'Withdraw':
-            try:
-                self.checking_balance = self.checking_balance_label.text()
-                self.checking_balance -= self.checking_input
+        if account_type == 'checking':
+            balance_label = self.checking_balance_label
+            amount_input = self.checking_amount_input
+            option_select = self.checking_option_select
+            error_label = self.checking_error_label
 
-                if self.checking_balance < 0:
-                    raise ValueError
-                else:
-                    self.checking_balance_label.setText(f"{self.checking_balance:.2f}")
+        elif account_type == 'savings':
+            balance_label = self.savings_balance_label
+            amount_input = self.savings_amount_input
+            option_select = self.savings_option_select
+            error_label = self.savings_error_label
 
-            except ValueError:
-                self.checking_error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
+        try:
+            amount = float(amount_input.text())
+            if amount <= 0:
+                raise ValueError
 
-    def savings_action(self):
-        self.savings_balance = float(self.savings_balance_label.text())
-        self.savings_input = float(self.savings_amount_input.text())
+        except ValueError:
+            error_label.setText("Please enter a positive number.")
+            amount_input.clear()
 
-        self.savings_option = self.savings_option_select.currentText()
+        option = option_select.currentText()
+
+        if option == 'Deposit':
+            account.deposit(amount)
+            balance_label.setText(f"{account.get_balance():.2f}")
+            error_label.setText("")
 
 
+        elif option == 'Withdraw':
+            if account.withdraw(amount):
+                balance_label.setText(f"{account.get_balance():.2f}")
+            else:
+                error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
 
 
 class Account:
-    def __init__(self, name, balance=0):
+    def __init__(self, name: object, balance: object = 0) -> None:
         self.__name = name
         self.set_balance(balance)
 
-    def deposit(self, amount):
+    def deposit(self, amount) -> bool:
+        """Deposits amount"""
         if amount <= 0:
             return False
         else:
@@ -118,9 +144,9 @@ class Account:
             return True
 
     def withdraw(self, amount):
-       if amount <= 0 or amount > self.__balance:
+        if amount <= 0 or amount > self.__balance:
            return False
-       else:
+        else:
            self.__balance -= amount
            return True
 
@@ -141,45 +167,4 @@ class Account:
 
     def __str__(self):
         return f'Account name = {self.get_name()}, Account balance = {self.get_balance():.2f}'
-
-class SavingAccount(Account):
-    MINIMUM = 100
-    RATE = 0.02
-
-    def __init__(self, name):
-        super().__init__(name, self.MINIMUM)
-        self.__deposit_count = 0
-
-    def apply_interest(self):
-        if self.__deposit_count % 5 == 0 and self.__deposit_count != 0:
-            updated_balance = self.get_balance() + (self.get_balance() * self.RATE)
-            self.set_balance(updated_balance)
-
-    def deposit(self, amount):
-        if amount <= 0:
-            return False
-        if super().deposit(amount):
-            self.__deposit_count += 1
-            self.apply_interest()
-        return True
-
-    def withdraw(self, amount):
-        x = self.get_balance() - amount
-        if amount <= 0 or x < self.MINIMUM:
-            return False
-        return super().withdraw(amount)
-
-    def set_balance(self, value):
-        if value < self.MINIMUM:
-            super().set_balance(self.MINIMUM)
-        else:
-            super().set_balance(value)
-
-    def __str__(self):
-        return f'SAVING ACCOUNT: {super().__str__()}'
-
-
-
-
-
 
