@@ -40,6 +40,7 @@ class Ui_LaunchWindow(object):
         self.username_input.setObjectName("username_input")
         self.password_input = QtWidgets.QLineEdit(parent=self.Welcome_2)
         self.password_input.setGeometry(QtCore.QRect(130, 160, 241, 20))
+        self.password_input.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.password_input.setObjectName("password_input")
         self.signin_button = QtWidgets.QPushButton(parent=self.Welcome_2)
         self.signin_button.setGeometry(QtCore.QRect(190, 200, 121, 23))

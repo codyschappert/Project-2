@@ -1,7 +1,5 @@
 from PyQt6.QtWidgets import *
-from bankdetailsgui import *
-from launchscreengui import *
-from accountcreationgui import *
+from gui import *
 import csv
 
 user_info = {}
@@ -33,9 +31,12 @@ class Launch(QMainWindow, Ui_LaunchWindow):
 
         except KeyError:
             self.error_label.setText("No such user!")
+            self.username_input.clear()
+            self.password_input.clear()
 
         except ValueError:
             self.error_label.setText("Incorrect Password!")
+            self.password_input.clear()
 
     def create_account_window(self) -> None:
         self.create_account.show()
