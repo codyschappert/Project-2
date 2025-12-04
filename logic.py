@@ -22,7 +22,6 @@ class Launch(QMainWindow, Ui_LaunchWindow):
 
         try:
             if user_info[username]['password'] == password:
-                print('success')
                 self.error_label.setText("You are logged in!")
                 self.details.set_user(username) # Communicates to details window which user is logged in
                 self.details.show()
@@ -83,12 +82,11 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         self.savings_option_confirm.clicked.connect(lambda: self.confirm('savings'))
 
     def set_user(self, username):
-        """Load's correct details for the logged in user"""
+        """Load's correct details for the logged-in user"""
         self.user = username
-        self.accounts = user_info[username['checking'], username['savings']]
-        print(self.accounts)
-        self.checking_balance_label.setText(f"{self.accounts['checking']:.2f}") # Sets checking balance on log in
-        self.savings_balance_label.setText(f"{self.accounts['savings']:.2f}") # Sets savings balance on login
+        self.accounts = user_info[username]
+        self.checking_balance_label.setText(f"{self.accounts['checking'].get_balance():.2f}") # Sets checking balance on log in
+        self.savings_balance_label.setText(f"{self.accounts['savings'].get_balance():.2f}") # Sets savings balance on login
 
     def confirm(self, account_type):
         """Deposits/Withdraws to/from account_type"""
