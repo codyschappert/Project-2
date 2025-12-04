@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="69b9c6f4-9c36-42f8-a055-d68335a5d55a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Project-2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Project-2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account_creation.ui" beforeDir="false" afterPath="$PROJECT_DIR$/account_creation.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accountcreationgui.py" beforeDir="false" afterPath="$PROJECT_DIR$/accountcreationgui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bank_details.ui" beforeDir="false" afterPath="$PROJECT_DIR$/bank_details.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bankdetailsgui.py" beforeDir="false" afterPath="$PROJECT_DIR$/bankdetailsgui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/logic.py" afterDir="false" />
     </list>
@@ -137,7 +137,7 @@
       <workItem from="1764614286057" duration="470000" />
       <workItem from="1764614784749" duration="4989000" />
       <workItem from="1764882622113" duration="30000" />
-      <workItem from="1764882671167" duration="2090000" />
+      <workItem from="1764882671167" duration="3947000" />
     </task>
     <servers />
   </component>
@@ -172,9 +172,9 @@
     <SUITE FILE_PATH="coverage/logic_py$bankdetailsgui.coverage" NAME="bankdetailsgui Coverage Results" MODIFIED="1764882797514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/gui_p2_py$bankdetailsgui.coverage" NAME="bankdetailsgui Coverage Results" MODIFIED="1764612811296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/View" />
     <SUITE FILE_PATH="coverage/Project_2$logic.coverage" NAME="logic Coverage Results" MODIFIED="1764615001455" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/logic_py$test.coverage" NAME="test Coverage Results" MODIFIED="1764884618716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/logic_py$test.coverage" NAME="test Coverage Results" MODIFIED="1764884969993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/gui_p2_py$main_p2.coverage" NAME="main_p2 Coverage Results" MODIFIED="1764612558845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Model" />
-    <SUITE FILE_PATH="coverage/logic_py$main.coverage" NAME="main Coverage Results" MODIFIED="1764884635243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/logic_py$main.coverage" NAME="main Coverage Results" MODIFIED="1764886532013" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/logic_py$logic.coverage" NAME="logic Coverage Results" MODIFIED="1764884462819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

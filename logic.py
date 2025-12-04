@@ -22,9 +22,11 @@ class Launch(QMainWindow, Ui_LaunchWindow):
 
         try:
             if user_info[username]['password'] == password:
-                self.error_label.setText("You are logged in!")
                 self.details.set_user(username) # Communicates to details window which user is logged in
                 self.details.show()
+
+                self.username_input.clear()
+                self.password_input.clear()
 
             elif user_info[username] != password:
                 raise ValueError
@@ -45,6 +47,7 @@ class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
         self.setupUi(self)
 
         self.create_account_button.clicked.connect(lambda: self.create_account())
+        self.back_button.clicked.connect(lambda: self.back())
 
     def create_account(self):
 
@@ -63,11 +66,20 @@ class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
             }
 
             self.error_label.setText("Account created!")
-            print(user_info)
+
+            self.username_input.clear()
+            self.password_input.clear()
+            self.password_confirm_input.clear()
+
         except TypeError:
             self.password_input.clear()
             self.password_confirm_input.clear()
             self.error_label.setText("Passwords do not match!")
+
+    def back(self):
+        self.error_label.setText("Please create an account.")
+        self.hide()
+
 
 
 class Details(QMainWindow, Ui_BankDetailsWindow):
@@ -80,6 +92,7 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
 
         self.checking_option_confirm.clicked.connect(lambda: self.confirm('checking'))
         self.savings_option_confirm.clicked.connect(lambda: self.confirm('savings'))
+        self.sign_out_button.clicked.connect(lambda: self.sign_out())
 
     def set_user(self, username):
         """Load's correct details for the logged-in user"""
@@ -96,13 +109,13 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
             balance_label = self.checking_balance_label
             amount_input = self.checking_amount_input
             option_select = self.checking_option_select
-            error_label = self.checking_error_label
+            error_label = self.bank_error_label
 
         elif account_type == 'savings':
             balance_label = self.savings_balance_label
             amount_input = self.savings_amount_input
             option_select = self.savings_option_select
-            error_label = self.savings_error_label
+            error_label = self.bank_error_label
 
         try:
             amount = float(amount_input.text())
@@ -120,13 +133,21 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
             balance_label.setText(f"{account.get_balance():.2f}")
             error_label.setText("")
 
-
         elif option == 'Withdraw':
             if account.withdraw(amount):
                 balance_label.setText(f"{account.get_balance():.2f}")
             else:
                 error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
 
+    def sign_out(self):
+        self.checking_amount_input.clear()
+        self.checking_option_select.setCurrentIndex(0)
+
+        self.savings_amount_input.clear()
+        self.savings_option_select.setCurrentIndex(0)
+
+        self.bank_error_label.clear()
+        self.hide()
 
 class Account:
     def __init__(self, name: object, balance: object = 0) -> None:
