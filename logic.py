@@ -3,8 +3,53 @@ from gui import *
 import csv
 
 user_info = {}
+csv_file = "accounts.csv"
+def find_account(username):
+    if user_info.get(username) is not None:
+        print(user_info[username])
+    else:
+        return False
+
+def load_user_info_from_csvfile() -> None:
+    """Loads all users and user info into user_info dict from a csv file."""
+    try:
+        with open(csv_file, mode='r', newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+            for row in reader:
+                username = row['username']
+                password = row['password']
+
+                checking = float(row['checking'])
+                savings = float(row['savings'])
+
+                user_info[username] = {
+                    'password': password,
+                    'checking': Account("Checking", checking),
+                    'savings': Account("Savings", savings)
+                }
+
+    except FileNotFoundError:
+        pass # This whole function is non-essential because of no existing user database exists, the whole program can still function.
+
+def save_users_to_csvfile() -> None:
+    """Saves all usernames, password, and account info from user_info dict into a csv file."""
+    with open(csv_file, mode='w', newline='') as csvfile:
+        fieldnames = ['username', 'password', 'checking', 'savings']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+
+        for username, data in user_info.items():
+            writer.writerow({
+                'username': username,
+                'password': data['password'],
+                'checking': data['checking'].get_balance(),
+                'savings': data['savings'].get_balance()
+            })
 
 class Launch(QMainWindow, Ui_LaunchWindow):
+    """Initializes the launch window."""
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
@@ -15,6 +60,7 @@ class Launch(QMainWindow, Ui_LaunchWindow):
         self.createaccount_button.clicked.connect(lambda: self.create_account_window())
 
     def signin(self) -> None:
+        """Checks inputted username and password against user_info dict when sign in button is clicked."""
         username = self.username_input.text()
         password = self.password_input.text()
 
@@ -39,52 +85,67 @@ class Launch(QMainWindow, Ui_LaunchWindow):
             self.password_input.clear()
 
     def create_account_window(self) -> None:
+        """Shows the account creation window when create account button is clicked."""
         self.create_account.show()
 
 
 class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
     def __init__(self) -> None:
+        """Initializes the account creation window."""
         super().__init__()
         self.setupUi(self)
 
         self.create_account_button.clicked.connect(lambda: self.create_account())
         self.back_button.clicked.connect(lambda: self.back())
 
-    def create_account(self):
-
+    def create_account(self) -> None:
+        """Stores new account data to user_info after input is handled."""
         username = self.username_input.text()
         password = self.password_input.text()
         password_confirm = self.password_confirm_input.text()
 
         try:
-            if password != password_confirm:
-                raise TypeError
+            if not username:
+                raise ValueError('Please enter a username.')
 
-            user_info[username] = { # Sets user account details properly
+            elif username in user_info:
+                raise ValueError('Account already exists.')
+
+            elif not password:
+                raise ValueError('Please enter a password.')
+
+            elif password != password_confirm:
+                raise ValueError('Passwords do not match.')
+
+        except ValueError as e:
+            self.username_input.clear()
+            self.password_input.clear()
+            self.password_confirm_input.clear()
+            self.error_label.setText(f"{e}")
+
+        else:
+            user_info[username] = {  # Sets user account details properly
                 'password': password,
                 'checking': Account('Checking', 0),
                 'savings': Account('Savings', 0)
             }
 
             self.error_label.setText("Account created!")
+            save_users_to_csvfile()
 
             self.username_input.clear()
             self.password_input.clear()
             self.password_confirm_input.clear()
 
-        except TypeError:
-            self.password_input.clear()
-            self.password_confirm_input.clear()
-            self.error_label.setText("Passwords do not match!")
-
-    def back(self):
+    def back(self) -> None:
+        """Resets the account creation window and returns to launch window when back button is clicked."""
         self.error_label.setText("Please create an account.")
         self.hide()
 
 
-
 class Details(QMainWindow, Ui_BankDetailsWindow):
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initializes the account details window."""
         super().__init__()
         self.setupUi(self)
 
@@ -95,15 +156,15 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         self.savings_option_confirm.clicked.connect(lambda: self.confirm('savings'))
         self.sign_out_button.clicked.connect(lambda: self.sign_out())
 
-    def set_user(self, username):
-        """Load's correct details for the logged-in user"""
+    def set_user(self, username) -> None:
+        """Load's correct details for the logged-in user."""
         self.user = username
         self.accounts = user_info[username]
         self.checking_balance_label.setText(f"{self.accounts['checking'].get_balance():.2f}") # Sets checking balance on log in
         self.savings_balance_label.setText(f"{self.accounts['savings'].get_balance():.2f}") # Sets savings balance on login
 
-    def confirm(self, account_type):
-        """Deposits/Withdraws to/from account_type"""
+    def confirm(self, account_type) -> None:
+        """Deposits/Withdraws to/from account_type."""
         account = self.accounts[account_type] # initializes the object (account) from the dict info
 
         if account_type == 'checking':
@@ -121,26 +182,34 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         try:
             amount = float(amount_input.text())
             if amount <= 0:
-                raise ValueError
+                raise TypeError('Please enter a positive number')
 
-        except ValueError:
-            error_label.setText("Please enter a positive number.")
+        except TypeError as e:
+            error_label.setText(f"{e}")
             amount_input.clear()
 
-        option = option_select.currentText()
+        except ValueError:
+            error_label.setText("Please enter a number.")
+            amount_input.clear()
 
-        if option == 'Deposit':
-            account.deposit(amount)
-            balance_label.setText(f"{account.get_balance():.2f}")
-            error_label.setText("")
+        else:
+            option = option_select.currentText()
 
-        elif option == 'Withdraw':
-            if account.withdraw(amount):
+            if option == 'Deposit':
+                account.deposit(amount)
                 balance_label.setText(f"{account.get_balance():.2f}")
-            else:
-                error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
+                error_label.setText("")
+                save_users_to_csvfile()
 
-    def sign_out(self):
+            elif option == 'Withdraw':
+                if account.withdraw(amount):
+                    balance_label.setText(f"{account.get_balance():.2f}")
+                    save_users_to_csvfile()
+                else:
+                    error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
+
+    def sign_out(self) -> None:
+        """Resets all user inputs to original states and hides window when sign out button is clicked."""
         self.checking_amount_input.clear()
         self.checking_option_select.setCurrentIndex(0)
 
@@ -152,39 +221,47 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
 
 class Account:
     def __init__(self, name: object, balance: object = 0) -> None:
+        """Initializes the account object."""
         self.__name = name
         self.set_balance(balance)
 
     def deposit(self, amount) -> bool:
-        """Deposits amount"""
+        """Deposits amount."""
         if amount <= 0:
             return False
         else:
             self.__balance += amount
             return True
 
-    def withdraw(self, amount):
+    def withdraw(self, amount) -> bool:
+        """Withdraws amount."""
         if amount <= 0 or amount > self.__balance:
            return False
         else:
            self.__balance -= amount
            return True
 
-    def get_balance(self):
+    def get_balance(self) -> int:
+        """Gets balance."""
         return self.__balance
 
-    def get_name(self):
+    def get_name(self) -> object:
+        """Gets name."""
         return self.__name
 
-    def set_balance(self, value):
+    def set_balance(self, value) -> None:
+        """Sets balance unless value is negative."""
         if value < 0:
             self.__balance = 0
         else:
             self.__balance = value
 
-    def set_name(self, value):
+    def set_name(self, value) -> None:
+        """Sets name."""
         self.__name = value
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Returns formatted string of account details."""
         return f'Account name = {self.get_name()}, Account balance = {self.get_balance():.2f}'
 
+load_user_info_from_csvfile()
