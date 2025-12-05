@@ -5,11 +5,6 @@ import csv
 
 user_info = {}
 csv_file = "accounts.csv"
-def find_account(username):
-    if user_info.get(username) is not None:
-        print(user_info[username])
-    else:
-        return False
 
 def load_user_info_from_csvfile() -> None:
     """Loads all users and user info into user_info dict from a csv file."""
@@ -51,16 +46,16 @@ def save_users_to_csvfile() -> None:
 
 class Launch(QMainWindow, Ui_LaunchWindow):
     """Initializes the launch window."""
-    def __init__(self) -> None:
+    def __init__(self: Launch) -> None:
         super().__init__()
         self.setupUi(self)
-        self.create_account = CreateAccount()
-        self.details = Details()
+        self.create_account = CreateAccount(self)
+        self.details = Details(self)
 
         self.signin_button.clicked.connect(lambda: self.signin())
         self.createaccount_button.clicked.connect(lambda: self.create_account_window())
 
-    def signin(self) -> None:
+    def signin(self: Launch) -> None:
         """Checks inputted username and password against user_info dict when sign in button is clicked."""
         username = self.username_input.text()
         password = self.password_input.text()
@@ -68,6 +63,7 @@ class Launch(QMainWindow, Ui_LaunchWindow):
         try:
             if user_info[username]['password'] == password:
                 self.details.set_user(username) # Communicates to details window which user is logged in
+                self.hide()
                 self.details.show()
 
                 self.username_input.clear()
@@ -85,21 +81,23 @@ class Launch(QMainWindow, Ui_LaunchWindow):
             self.error_label.setText("Incorrect Password!")
             self.password_input.clear()
 
-    def create_account_window(self) -> None:
+    def create_account_window(self: Launch) -> None:
         """Shows the account creation window when create account button is clicked."""
+        self.hide()
         self.create_account.show()
 
 
 class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
-    def __init__(self) -> None:
+    def __init__(self: CreateAccount, launch_window: Launch) -> None:
         """Initializes the account creation window."""
         super().__init__()
         self.setupUi(self)
+        self.launch_window = launch_window
 
         self.create_account_button.clicked.connect(lambda: self.create_account())
         self.back_button.clicked.connect(lambda: self.back())
 
-    def create_account(self) -> None:
+    def create_account(self: CreateAccount) -> None:
         """Stores new account data to user_info after input is handled."""
         username = self.username_input.text()
         password = self.password_input.text()
@@ -147,17 +145,21 @@ class CreateAccount(QMainWindow, Ui_AccountCreationWindow):
             self.password_input.clear()
             self.password_confirm_input.clear()
 
-    def back(self) -> None:
+    def back(self: CreateAccount) -> None:
         """Resets the account creation window and returns to launch window when back button is clicked."""
         self.error_label.setText("Please create an account.")
         self.hide()
 
+        self.launch_window.error_label.setText("Please log in or create an account.")
+        self.launch_window.show()
+
 
 class Details(QMainWindow, Ui_BankDetailsWindow):
-    def __init__(self) -> None:
+    def __init__(self: Details, launch_window: Launch) -> None:
         """Initializes the account details window."""
         super().__init__()
         self.setupUi(self)
+        self.launch_window = launch_window
 
         self.user = None  # stores username
         self.accounts = None  # stores account data in user's dict
@@ -166,14 +168,14 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         self.savings_option_confirm.clicked.connect(lambda: self.confirm('savings'))
         self.sign_out_button.clicked.connect(lambda: self.sign_out())
 
-    def set_user(self, username) -> None:
+    def set_user(self: Details, username: str) -> None:
         """Load's correct details for the logged-in user."""
         self.user = username
         self.accounts = user_info[username]
         self.checking_balance_label.setText(f"{self.accounts['checking'].get_balance():.2f}") # Sets checking balance on log in
         self.savings_balance_label.setText(f"{self.accounts['savings'].get_balance():.2f}") # Sets savings balance on login
 
-    def confirm(self, account_type) -> None:
+    def confirm(self: Details, account_type: str) -> None:
         """Deposits/Withdraws to/from account_type."""
         account = self.accounts[account_type] # initializes the object (account) from the dict info
 
@@ -189,9 +191,9 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
             option_select = self.savings_option_select
             error_label = self.bank_error_label
 
-        try:
-            amount = float(amount_input.text())
-            if amount <= 0:
+        try:                                                        # I'm really not sure why pycharm freaks out with all the upcoming variable names, especially because
+            amount = float(amount_input.text())                     # everything works flawlessly, but this is the most efficient option out of everything I tried
+            if amount <= 0:                                         # because everything else had a lot of repeated code.
                 raise TypeError('Please enter a positive number')
 
         except TypeError as e:
@@ -218,7 +220,7 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
                 else:
                     error_label.setText("Insufficient funds. Please deposit money or withdraw a smaller amount.")
 
-    def sign_out(self) -> None:
+    def sign_out(self: Details) -> None:
         """Resets all user inputs to original states and hides window when sign out button is clicked."""
         self.checking_amount_input.clear()
         self.checking_option_select.setCurrentIndex(0)
@@ -227,15 +229,18 @@ class Details(QMainWindow, Ui_BankDetailsWindow):
         self.savings_option_select.setCurrentIndex(0)
 
         self.bank_error_label.clear()
+        self.launch_window.error_label.setText("Please log in or create an account.")
+
         self.hide()
+        self.launch_window.show()
 
 class Account:
-    def __init__(self, name: object, balance: object = 0) -> None:
+    def __init__(self: Account, name: str, balance: float = 0.00) -> None:
         """Initializes the account object."""
         self.__name = name
         self.set_balance(balance)
 
-    def deposit(self, amount) -> bool:
+    def deposit(self: Account, amount: float) -> bool:
         """Deposits amount."""
         if amount <= 0:
             return False
@@ -243,7 +248,7 @@ class Account:
             self.__balance += amount
             return True
 
-    def withdraw(self, amount) -> bool:
+    def withdraw(self: Account, amount: float) -> bool:
         """Withdraws amount."""
         if amount <= 0 or amount > self.__balance:
            return False
@@ -251,26 +256,26 @@ class Account:
            self.__balance -= amount
            return True
 
-    def get_balance(self) -> int:
+    def get_balance(self: Account) -> int:
         """Gets balance."""
         return self.__balance
 
-    def get_name(self) -> object:
+    def get_name(self: Account) -> object:
         """Gets name."""
         return self.__name
 
-    def set_balance(self, value) -> None:
+    def set_balance(self: Account, value: float) -> None:
         """Sets balance unless value is negative."""
         if value < 0:
             self.__balance = 0
         else:
             self.__balance = value
 
-    def set_name(self, value) -> None:
+    def set_name(self: Account, value: float) -> None:
         """Sets name."""
         self.__name = value
 
-    def __str__(self) -> str:
+    def __str__(self: Account) -> str:
         """Returns formatted string of account details."""
         return f'Account name = {self.get_name()}, Account balance = {self.get_balance():.2f}'
 
